@@ -29,10 +29,10 @@ This library is a 1-to-1 port of the official `@session.js` (Bun) client modules
 
 ## 📦 Installation
 
-To install `session-python` along with its dependencies:
+To install `session-python`:
 
 ```bash
-pip install pynacl cryptography protobuf requests pysocks
+pip install session-python
 ```
 
 ---
