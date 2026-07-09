@@ -189,7 +189,7 @@ def main():
                             p.start()
                             processes.append(p)
                         
-                        with Live(Text("Initializing search...", style="yellow"), refresh_per_second=10) as live:
+                        with Live(Text("Initializing search...", style="yellow"), refresh_per_second=10, transient=True) as live:
                             while not stop_event.is_set() and result_queue.empty():
                                 time.sleep(0.1)
                                 checked = checked_counter.value
