@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "session-python"
+version = "1.0.0"
+description = "A pure Python implementation of the Session Messenger protocol client"
+readme = "README.md"
+authors = [
+    { name = "Towux", email = "towux@users.noreply.github.com" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Communications :: Chat",
+    "Intended Audience :: Developers"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pynacl>=1.5.0",
+    "cryptography>=41.0.0",
+    "protobuf>=4.21.0",
+    "requests>=2.31.0",
+    "pysocks>=1.7.1"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/towux/session-python"
+"Bug Tracker" = "https://github.com/towux/session-python/issues"
