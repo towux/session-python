@@ -189,26 +189,31 @@ def main():
                             p.start()
                             processes.append(p)
                         
-                        with Live(Text("Initializing search...", style="yellow"), refresh_per_second=10, transient=True) as live:
+                        if console.is_terminal:
+                            with Live(Text("Initializing search...", style="yellow"), refresh_per_second=10, transient=True) as live:
+                                while not stop_event.is_set() and result_queue.empty():
+                                    time.sleep(0.1)
+                                    checked = checked_counter.value
+                                    elapsed = time.time() - start_time
+                                    speed = checked / elapsed if elapsed > 0 else 0
+                                    
+                                    if checked < total_expected:
+                                        remaining_checks = total_expected - checked
+                                        remaining_seconds = remaining_checks / speed if speed > 0 else 0
+                                        eta_str = format_time(remaining_seconds)
+                                    else:
+                                        avg_seconds = total_expected / speed if speed > 0 else 0
+                                        eta_str = f"running over (avg {format_time(avg_seconds)})"
+                                    
+                                    live.update(Text(
+                                        f"Searching for ID starting with '05{prefix}' ({num_workers} threads)...\n"
+                                        f"Speed: {speed:.1f} id/sec | Checked: {checked}/{total_expected} | Time: {elapsed:.1f}s | ETA: {eta_str}",
+                                        style="cyan"
+                                    ))
+                        else:
+                            # Run silently in non-TTY mode (e.g. wrapped by setuptools exe or redirected)
                             while not stop_event.is_set() and result_queue.empty():
                                 time.sleep(0.1)
-                                checked = checked_counter.value
-                                elapsed = time.time() - start_time
-                                speed = checked / elapsed if elapsed > 0 else 0
-                                
-                                if checked < total_expected:
-                                    remaining_checks = total_expected - checked
-                                    remaining_seconds = remaining_checks / speed if speed > 0 else 0
-                                    eta_str = format_time(remaining_seconds)
-                                else:
-                                    avg_seconds = total_expected / speed if speed > 0 else 0
-                                    eta_str = f"running over (avg {format_time(avg_seconds)})"
-                                
-                                live.update(Text(
-                                    f"Searching for ID starting with '05{prefix}' ({num_workers} threads)...\n"
-                                    f"Speed: {speed:.1f} id/sec | Checked: {checked}/{total_expected} | Time: {elapsed:.1f}s | ETA: {eta_str}",
-                                    style="cyan"
-                                ))
                         
                         # Retrieve result and cleanup processes
                         session_id, mnemonic = result_queue.get()
