@@ -126,7 +126,38 @@ with Session(proxy=PROXY) as session:
     session.delete_message(conversation=RECIPIENT_ID, timestamp=1783586415070, hash_val="IXFgLeoj...")
 ```
 
+## 💻 Command Line Interface (CLI)
+
+The package installs a command-line tool `sscli` to manage mnemonics and generate accounts directly from the terminal.
+
+### 1. Generate a new Session ID and Mnemonic
+```bash
+sscli mnemonic gen
+```
+
+### 2. Generate a Vanity Session ID (Prefix Brute-force)
+Find custom Session IDs. By default, this uses all available CPU threads for maximum performance:
+```bash
+# Find a Session ID starting with '05abc...'
+sscli mnemonic gen -p abc
+
+# Generate 3 accounts starting with '0577...' using 2 threads
+sscli mnemonic gen -p 77 -n 3 -t 2
+```
+
+### 3. Derive Session ID from existing mnemonic
+```bash
+sscli mnemonic gen "your 13 word mnemonic here..."
+```
+
+### 4. Verify a mnemonic
+Validates the checksum and words of a mnemonic, and outputs its hex seed and Session ID:
+```bash
+sscli mnemonic verify "your 13 word mnemonic here..."
+```
+
 ---
+
 
 ## ⚖️ License
 
